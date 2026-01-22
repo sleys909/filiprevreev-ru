@@ -8,6 +8,11 @@ body {
 
 
 
+.colorGrey{
+  color: rgb(158, 157, 157);
+}
+
+
 .name{
     color: rgb(3, 182, 107);
 }
@@ -42,7 +47,6 @@ body {
 .RightSide{
     margin-right: auto;
     text-align: right;
-
     flex: 1;
 
 }
