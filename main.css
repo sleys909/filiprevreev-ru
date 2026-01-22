@@ -1,0 +1,266 @@
+body {
+    /* Стили для всего тела сайта */
+    font-family: Arial, sans-serif; /* Шрифт. Если нет Arial, возьмёт любой без засечек */
+    background: rgb(0, 0, 0);
+    color: #ffffff; /* Цвет основного текста (тёмно-серый) */
+    padding: 20px; /* Отступы от краёв окна */
+}
+
+
+
+.name{
+    color: rgb(3, 182, 107);
+}
+
+
+.container {
+  display: flex; /* Включаем flexbox */
+  justify-content: space-between; /* Равномерное распределение */
+  align-items: flex-start; /* Выравнивание по верху */
+  gap: 20px; /* Расстояние между колонками */
+  max-width: 1800px; /* Максимальная ширина контейнера */
+  margin: 0 auto; /* Центрирование контейнера */
+  padding: 20px;
+}
+
+.LeftSide{
+    margin-left: auto;
+    text-align: left;
+    flex: 1;
+}
+.Center {
+  max-width: 1400px;
+  text-align: center; 
+  color: rgb(217, 255, 255);
+  font-size: 20px;
+  opacity: 0;
+  padding: 20px;
+  animation-delay: 0.5s;
+  animation: fadeIn 1.5s ease forwards; /* Анимация */
+}
+
+.RightSide{
+    margin-right: auto;
+    text-align: right;
+
+    flex: 1;
+
+}
+
+
+.img {
+    border-radius: 15px;    
+    width: 300px;
+    height: 300px;
+}
+
+.ImgCenter {
+    width: 300px;
+    height: 300px;
+    margin: 0 0 0 0;
+}
+
+.BestTextRed{
+    color: rgb(3, 111, 161);
+}
+
+.BestTextRed h1{
+    font-size: 140px;
+}
+
+.Text {
+    max-width: 900px; /* Сужаем текст */
+    margin: 0 auto; /* Центрируем */
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 20px;
+    border: 1px solid rgba(0, 163, 251, 0.3);
+    text-align: justify; /* Красивое выравнивание */
+    line-height: 1.6; /* Межстрочный интервал */
+    font-size: 30px; /* Увеличил размер текста */
+}
+
+/* Стили для блока "Заслуги" */
+.Achievements {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin: 30px auto;
+  max-width: 1200px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  border: 1px solid rgba(3, 182, 107, 0.4);
+  animation: fadeIn 1s ease 0.5s both;
+}
+
+.AchievementText {
+  flex: 1;
+  text-align: left;
+  padding-right: 20px;
+}
+
+.AchievementText h3 {
+  color: #03b66b;
+  font-size: 32px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.AchievementText ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.AchievementText li {
+  margin-bottom: 15px;
+  padding-left: 30px;
+  position: relative;
+  font-size: 22px;
+  line-height: 1.4;
+  color: #d9ffff;
+}
+
+.AchievementText li:before {
+  content: "🏆";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+.AchievementImage {
+  flex: 0 0 350px;
+  text-align: center;
+}
+
+.AchievementImage img {
+  width: 100%;
+  height: auto;
+  border-radius: 15px;
+  border: 3px solid #03b66b;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.AchievementImage img:hover {
+  transform: scale(1.03);
+}
+
+.img-caption {
+  margin-top: 15px;
+  font-style: italic;
+  color: #03b66b;
+  font-size: 18px;
+  line-height: 1.4;
+}
+
+/* Стили для блока "Цитаты" */
+.quote {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin: 30px auto;
+  max-width: 1200px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  border: 1px solid rgba(182, 3, 122, 0.4);
+  animation: fadeIn 1s ease 0.5s both;
+}
+
+.quoteText {
+  flex: 1;
+  text-align: left;
+  padding-right: 20px;
+}
+
+.quoteText li {
+  margin-bottom: 15px;
+  padding-left: 30px;
+  position: relative;
+  font-size: 22px;
+  line-height: 1.4;
+  color: #d9ffff;
+}
+
+.quoteText li:before {
+  content: "⚔️";
+  position: absolute;
+  left: 0;
+  top: 0;
+}
+
+/* Стили для блока "Биография" */
+.Biography {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin: 30px auto;
+  max-width: 1200px;
+  padding: 25px;
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  border: 1px solid rgba(3, 182, 27, 0.349);
+  animation: fadeIn 1s ease 0.5s both;
+} 
+
+.BiographyText {
+  flex: 1;
+  text-align: left;
+  padding-right: 20px;
+}
+
+
+
+.theme{
+  color:black;
+}
+
+
+.ImpotanText {
+  color: whitesmoke;
+  font-size: 30px;
+}
+
+
+
+
+
+
+/* Адаптивность для мобильных устройств */
+@media (max-width: 1100px) {
+  .Achievements {
+    flex-direction: column;
+    gap: 30px;
+  }
+  
+  .AchievementText {
+    padding-right: 0;
+  }
+  
+  .AchievementImage {
+    flex: 0 0 auto;
+    width: 80%;
+    margin: 0 auto;
+  }
+  
+  .AchievementText h3 {
+    font-size: 28px;
+  }
+  
+  .AchievementText li {
+    font-size: 20px;
+  }
+}
+
+
+@keyframes fadeIn { /* анимация появление текста */
+    from {
+        opacity: 0; /* Начало: прозрачный */
+        transform: translateY(30px); /* Слегка смещён вниз */
+    }
+    to {
+        opacity: 1; /* Конец: полностью видимый */
+        transform: translateY(0); /* На своём месте */
+    }
+}
