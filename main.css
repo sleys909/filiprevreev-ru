@@ -425,6 +425,49 @@ body {
     box-shadow: 0 5px 15px rgba(3, 182, 107, 0.3);
 }
 
+
+
+
+/* Галерея */
+.gallery-column {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    height: 100%;
+}
+
+.gallery-img {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    object-fit: cover;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.gallery-img:hover {
+    transform: scale(1.03);
+    box-shadow: 0 10px 25px rgba(3, 182, 107, 0.5);
+    border: 2px solid #03b66b;
+}
+
+/* Анимация появления картинок */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeInUp 0.8s ease forwards;
+}
+
+
 /* Эффект попадания тапка */
 @keyframes hit {
     0% { transform: scale(1) rotate(45deg); }
