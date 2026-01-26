@@ -1,4 +1,4 @@
-// game.js - исправленный вариант
+    // game.js - исправленный вариант
 
 let gameArea, character, slipper;
 let startBtn, pauseBtn, resetBtn;
@@ -246,14 +246,12 @@ function checkCollision() {
     return !(slipperRect.right < characterRect.left + 10 || 
              slipperRect.left > characterRect.right - 10 || 
              slipperRect.bottom < characterRect.top + 10 || 
-             slipperRect.top > characterRect.bottom - 10);
+             slipperRect.top > characterRect.bottom );
 }
 
 function slipperHit() {
     if (gameOverTriggered) return; // ДОБАВЛЕНО: защита от повторного вызова
-    
     gameOverTriggered = true;
-    
     // Останавливаем движение
     clearInterval(slipperInterval);
     
@@ -305,8 +303,6 @@ function gameOver() {
         if (gameArea.querySelector('.game-message')) {
             gameArea.querySelector('.game-message').remove();
         }
-        alert(`Игра окончена!\n\nВремя: ${time.toFixed(1)} сек\nТапков увернулся: ${score}\nРекорд: ${highscore.toFixed(1)} сек\n\n${comment}`);
-        collisionChecked = false; // Сбрасываем флаг
     }, 1500);
 }
 
