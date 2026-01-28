@@ -10,6 +10,8 @@ body {
 
 .colorGrey{
   color: rgb(158, 157, 157);
+  margin: 0;
+  padding: 0;
 }
 
 
@@ -437,8 +439,8 @@ body {
 }
 
 .gallery-img {
-    width: 100%;
-    height: auto;
+    width: 300px;
+    height: 300px;
     border-radius: 15px;
     object-fit: cover;
     transition: all 0.3s ease;
@@ -449,6 +451,177 @@ body {
     transform: scale(1.03);
     box-shadow: 0 10px 25px rgba(3, 182, 107, 0.5);
     border: 2px solid #03b66b;
+}
+
+
+/* Кликер евреева */ 
+
+.ClickerEvreeva {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    border-radius: 20px;
+    padding: 30px;
+    margin: 30px 0;
+    border: 3px solid #ff4757;
+    box-shadow: 0 10px 30px rgba(255, 71, 87, 0.3);
+}
+
+.ClickerStats {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    padding: 20px;
+    margin-bottom: 30px;
+    border: 2px solid #ffa502;
+}
+
+.ClickerGame-area{
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 30px;
+    margin-bottom: 30px;
+}
+
+.Upgrade-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.stat-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.ClickerCharacter {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.ClickerUpgrateText{
+    font-size: 100px;
+    color: #11b864;
+}
+
+.ClickerUpgrade{
+    font: 30px;
+}
+
+.upgrades-box {
+  max-height: 400px; /* Фиксированная высота */
+  overflow-y: auto; /* Вертикальная прокрутка */
+  margin-top: 10px;
+  padding-right: 5px;
+}
+
+/* Стилизация скроллбара */
+.upgrades-box::-webkit-scrollbar {
+  width: 8px;
+}
+
+.upgrades-box::-webkit-scrollbar-track {
+  background: #333;
+  border-radius: 4px;
+}
+
+.upgrades-box::-webkit-scrollbar-thumb {
+  background: #666;
+  border-radius: 4px;
+}
+
+.ClickerUpgrade {
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: rgba(68, 68, 68, 0.8);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 22px;
+    color: #d9ffff;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(3, 182, 107, 0.3);
+}
+
+.ClickerUpgrade:hover {
+    background: rgba(85, 85, 85, 0.9);
+    border-color: rgba(3, 182, 107, 0.6);
+}
+
+.ClickerUpgrade .colorGrey {
+    margin: 0 10px;
+    flex-grow: 1; /* Позволяет элементу занять доступное пространство */
+}
+
+/* Улучшаем внешний вид контейнера улучшений */
+.Upgrade-contener {
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 15px;
+    padding: 20px;
+    border: 2px solid #ffa502;
+}
+.character-card {
+    cursor: pointer;
+    transition: transform 0.1s;
+    user-select: none;
+}
+
+.character-card:active {
+    transform: scale(0.95);
+}
+
+.character-card:hover {
+    transform: scale(1.02);
+}
+/* Стили для кнопки улучшения в кликере */
+
+.ClickerBuyButton {
+    background: linear-gradient(45deg, #03b66b, #02a85a);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: bold;
+    white-space: nowrap;
+    margin-left: 15px;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    text-align: center;
+}
+
+
+.ClickerBuyButton:hover {
+    background: linear-gradient(45deg, #02a85a, #01974f);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(3, 182, 107, 0.4);
+}
+
+.ClickerBuyButton:active {
+    transform: scale(0.95);
+}
+
+
+.ClickerBuyButton.not-enough {
+    background-color: #f44336;
+    animation: shake 0.5s;
+}
+
+.ClickerBuyButton:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
 }
 
 /* Анимация появления картинок */

@@ -78,7 +78,7 @@
                         <li>Мидас — моё оружие. Трон — моя цель.</li>
                         <li>Смерть — это не поражение. Это перезагрузка.</li>
                         <li>Они смеются над моим KDA. Я тоже."</li>
-                        <li>У меня два правила: 1) Купить Мидас. 2) Не забыть про первое правило.</li>
+                        <li>У меня два правила: 1) Улучшить Мидас. 2) Не забыть про первое правило.</li>
                         <li>Каждая смерть — это урок. Я самый образованый игрок в доте.</li>
                     </ul>
                 </div>
@@ -164,7 +164,7 @@
                     Евреев доказал: киберспорт — это не про молодость и рефлексы.
                     Это про характер, закалённый бабушкиными тапками. Про мудрость,
                     полученную стоя в углу. И про понимание, что настоящая победа — не в разрушении
-                    вражеского трона, а в том, чтобы пережить бабушкин ганг и купитьМидас.
+                    вражеского трона, а в том, чтобы пережить бабушкин ганг и УлучшитьМидас.
 
                     <div class="ImpotanText"> Наши дни: </div>
                     Бабушка Ирина Петровна до сих пор не понимает, чем занимается внук,
@@ -172,7 +172,8 @@
                     Музее киберспорта как реликвия.
                 </div>  
             </div>
-            <div class="BestTextRed"><h1>Испытай себя: <span class="colorGrey"> Увернись от бабушкиного тапка! </span> </h1></div>
+            <div class="BestTextRed"><h1>Испытай себя: <span class="colorGrey"> Увернись от бабушкиного тапка! </span> </h1>
+            </div>
             <div class="game-container">
                 <div class="game-stats">
                     <div class="stat">
@@ -231,11 +232,58 @@
                     </div>
                 </div>
             </div>
-            
-
+            <div class="BestTextRed"> <h1> Тест Евреева: <span class="colorGrey">  насколько ты Евреев </span></h1> </div>
+            <div class="TestEvreev">
+                 
+            </div>
+            <div class="BestTextRed"><h1> Кликер <span class="colorGrey"> Евреева </span> </h1> </div>
+            <div class="ClickerEvreeva"> 
+                <div class="ClickerStats">
+                    <div class="stat-container">
+                        <div class="stat-item">
+                            <span class="stat-label">Филиппкоины:</span>
+                            <span id="EvreevCoin" class="stat-value">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Сила клика:</span>
+                            <span id="ClickPower" class="stat-value">1</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Автоклики:</span>
+                            <span id="autoClickPower" class="stat-value">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="ClickerGame-area">
+                    <div class="character-card" id="ClickerCharacter"> 
+                        <img src="Picture/filipevteev.jpg" alt=""> 
+                    </div>
+                    <div class="Upgrade-contener">
+                        <div><span class="ClickerUpgrateText">💎Upgrade💎</span></div>
+                        <div class="upgrades-box">
+                            <!-- Улучшение силы клика -->
+                            <div class="ClickerUpgrade">
+                                Усилить клик 
+                                <span id="ClickerCostStrongClick" class="ClikerCost">10</span>
+                                <button id="UpgradePowerClick" class="ClickerBuyButton">Улучшить</button>
+                            </div>
+                            
+                            <!-- Улучшение автоклика (ДОБАВЬТЕ ЭТОТ БЛОК) -->
+                            <div class="ClickerUpgrade" id="ClickerUqpgradeAutoClick">
+                                Автоклик 
+                                <span id="ClickerCostAutoClick" class="ClikerCost">50</span>
+                                <button id="UpgradeAutoClick" class="ClickerBuyButton">Купить</button>
+                            </div>
+                            
+                        </div>        
+                    </div>
+                </div>
+            </div>
+    
         </div>
         <div class="RightSide" id="rightColumn"></div>  
     </div>
+<script src="Clicker.js"></script>
 <script src="game.js"></script>
 <script src="gallery.js"></script>
 </body>

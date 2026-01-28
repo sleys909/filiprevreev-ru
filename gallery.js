@@ -57,8 +57,6 @@ const allImages = [
     'photo_25_2026-01-22_23-07-31.jpg',
     'photo_26_2026-01-22_23-07-31.jpg',
     'photo_27_2026-01-22_23-07-31.jpg',
-
-
 ];
 
     const leftColumn = document.getElementById('leftColumn');
@@ -86,7 +84,6 @@ const allImages = [
         img.className = 'gallery-img';
         img.src = 'Picture/' + filename;
         img.alt = 'Филипп Евреев';
-        img.loading = 'lazy';
         img.style.width = '100%';
         img.style.marginBottom = '15px';
         img.style.borderRadius = '10px';
