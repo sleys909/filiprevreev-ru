@@ -1,4 +1,4 @@
-    // game.js - исправленный вариант
+// game.js - УЛУЧШЕННАЯ ВЕРСИЯ
 
 let gameArea, character, slipper;
 let startBtn, pauseBtn, resetBtn;
@@ -17,10 +17,25 @@ let characterY = 50;
 let slipperSpeed = 3;
 let slipperDirectionX = 0;
 
-// ДОБАВЛЕНО: Флаги для защиты от повторных срабатываний
+// Улучшенные флаги
 let gameOverTriggered = false;
-let messageShown = false;
 let collisionChecked = false;
+let level = 1;
+let totalSlippersDodged = 0;
+
+// Звуки (бесплатные источники)
+const sounds = {
+    miss: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-retro-game-emergency-alarm-1000.mp3'),
+    hit: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-cartoon-falling-whistle-392.mp3'),
+    achievement: new Audio('https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3'),
+};
+
+// Статистика
+let stats = {
+    games: 0,
+    totalTime: 0,
+    totalSlippers: 0
+};
 
 document.addEventListener('DOMContentLoaded', function() {
     // Получаем элементы
@@ -35,10 +50,13 @@ document.addEventListener('DOMContentLoaded', function() {
     highscoreDisplay = document.getElementById('highscore');
     achievements = document.querySelectorAll('.achievement');
     
-    // Загружаем рекорд
+    // Загружаем рекорд и статистику
     const savedScore = localStorage.getItem('slipperHighscore');
     highscore = savedScore ? parseFloat(savedScore) : 0;
     highscoreDisplay.textContent = highscore.toFixed(1);
+    
+    const savedStats = localStorage.getItem('slipperStats');
+    if (savedStats) stats = JSON.parse(savedStats);
     
     // Инициализация
     updateCharacterPosition();
@@ -46,6 +64,12 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // События
     setupEventListeners();
+    
+    // Предзагрузка звуков
+    Object.values(sounds).forEach(sound => {
+        sound.load();
+        sound.volume = 0.3;
+    });
 });
 
 function setupEventListeners() {
@@ -55,6 +79,13 @@ function setupEventListeners() {
     startBtn.addEventListener('click', startGame);
     pauseBtn.addEventListener('click', togglePause);
     resetBtn.addEventListener('click', resetGame);
+    
+    // Клавиатура
+    document.addEventListener('keydown', (e) => {
+        if (e.code === 'Space') startGame();
+        if (e.code === 'Escape') togglePause();
+        if (e.code === 'KeyR') resetGame();
+    });
 }
 
 function handleMouseMove(e) {
@@ -97,10 +128,11 @@ function showSlipper() {
 function startGame() {
     if (gameRunning) return;
     
-    // ДОБАВЛЕНО: Сбрасываем флаги
+    // Сбрасываем всё
     gameOverTriggered = false;
-    messageShown = false;
     collisionChecked = false;
+    level = 1;
+    totalSlippersDodged = 0;
     
     gameRunning = true;
     gamePaused = false;
@@ -111,7 +143,8 @@ function startGame() {
     
     startBtn.disabled = true;
     pauseBtn.disabled = false;
-    pauseBtn.textContent = 'Пауза';
+    pauseBtn.textContent = 'Пауза (Esc)';
+    resetBtn.textContent = 'Сброс (R)';
     
     // Сброс достижений
     achievements.forEach(ach => ach.classList.remove('unlocked'));
@@ -127,17 +160,21 @@ function startGame() {
     // Запускаем игровые интервалы
     gameInterval = setInterval(updateGame, 100);
     slipperInterval = setInterval(moveSlipper, 20);
+    
+    // Показываем подсказку
+    showMessage('Уворачивайся!', '#4CAF50', 1000);
 }
 
 function togglePause() {
     if (!gameRunning) return;
     
     gamePaused = !gamePaused;
-    pauseBtn.textContent = gamePaused ? 'Продолжить' : 'Пауза';
+    pauseBtn.textContent = gamePaused ? 'Продолжить (Esc)' : 'Пауза (Esc)';
     
     if (gamePaused) {
         clearInterval(gameInterval);
         clearInterval(slipperInterval);
+        showMessage('ПАУЗА', '#FF9800', 500);
     } else {
         gameInterval = setInterval(updateGame, 100);
         slipperInterval = setInterval(moveSlipper, 20);
@@ -147,7 +184,7 @@ function togglePause() {
 function resetGame() {
     gameRunning = false;
     gamePaused = false;
-    gameOverTriggered = false; // ДОБАВЛЕНО
+    gameOverTriggered = false;
     
     clearInterval(gameInterval);
     clearInterval(slipperInterval);
@@ -155,6 +192,7 @@ function resetGame() {
     startBtn.disabled = false;
     pauseBtn.disabled = true;
     pauseBtn.textContent = 'Пауза';
+    resetBtn.textContent = 'Сброс';
     
     time = 0;
     score = 0;
@@ -166,9 +204,7 @@ function resetGame() {
     character.style.animation = '';
     
     // Сброс достижений
-    setTimeout(() => {
-        achievements.forEach(ach => ach.classList.remove('unlocked'));
-    }, 300);
+    achievements.forEach(ach => ach.classList.remove('unlocked'));
 }
 
 function updateGame() {
@@ -180,6 +216,8 @@ function updateGame() {
     if (currentTime > 0 && currentTime % 10 === 0) {
         if (!slipper.dataset.difficultyIncreased) {
             slipperSpeed += 0.5;
+            level++;
+            showMessage(`Уровень ${level}!`, '#4CAF50', 800);
             slipper.dataset.difficultyIncreased = 'true';
             setTimeout(() => {
                 delete slipper.dataset.difficultyIncreased;
@@ -187,7 +225,7 @@ function updateGame() {
         }
     }
     
-    // Проверяем достижения - только каждую секунду для оптимизации
+    // Проверяем достижения
     if (Math.floor(time) !== Math.floor(time - 0.1)) {
         checkAchievements();
     }
@@ -200,11 +238,15 @@ function createSlipper() {
     slipper.style.top = '-10%';
     
     // Случайное горизонтальное движение
-    slipperDirectionX = (Math.random() - 0.5) * 2; // от -1 до 1
+    slipperDirectionX = (Math.random() - 0.5) * 2;
+    
+    // Разный внешний вид тапков
+    const slippers = ['👟', '🥿', '👠', '👞', '🥾'];
+    slipper.textContent = slippers[Math.floor(Math.random() * slippers.length)];
 }
 
 function moveSlipper() {
-    if (!gameRunning || gamePaused || gameOverTriggered) return; // ДОБАВЛЕНО gameOverTriggered
+    if (!gameRunning || gamePaused || gameOverTriggered) return;
     
     // Текущая позиция тапка
     let currentTop = parseFloat(slipper.style.top) || -10;
@@ -212,7 +254,7 @@ function moveSlipper() {
     
     // Движение вниз и вбок
     currentTop += slipperSpeed;
-    currentLeft += slipperDirectionX;
+    currentLeft += slipperDirectionX * (level * 0.3); // Быстрее на высоких уровнях
     
     // Обновляем позицию
     slipper.style.top = currentTop + '%';
@@ -230,11 +272,19 @@ function moveSlipper() {
         return;
     }
     
+    // ⚠️ ЭТОГО БЛОКА НЕ БЫЛО! ДОБАВЬ ЕГО:
     // Если тапок улетел за нижнюю границу
     if (currentTop > 110) {
+        totalSlippersDodged++;
         score += 10;
         scoreDisplay.textContent = score;
-        createSlipper();
+        
+        // Звук промаха
+        sounds.miss.currentTime = 0;
+        sounds.miss.play();
+        
+        collisionChecked = false; // Сбрасываем флаг столкновения
+        createSlipper(); // Создаём новый тапок
     }
 }
 
@@ -242,18 +292,24 @@ function checkCollision() {
     const slipperRect = slipper.getBoundingClientRect();
     const characterRect = character.getBoundingClientRect();
     
-    // Упрощённая проверка
-    return !(slipperRect.right < characterRect.left + 10 || 
-             slipperRect.left > characterRect.right - 10 || 
-             slipperRect.bottom < characterRect.top + 10 || 
-             slipperRect.top > characterRect.bottom );
+    return !(slipperRect.right < characterRect.left + 20 || 
+             slipperRect.left > characterRect.right - 20 || 
+             slipperRect.bottom < characterRect.top + 20 || 
+             slipperRect.top > characterRect.bottom - 20);
 }
 
 function slipperHit() {
-    if (gameOverTriggered) return; // ДОБАВЛЕНО: защита от повторного вызова
+    if (gameOverTriggered) return;
     gameOverTriggered = true;
-    // Останавливаем движение
+    
     clearInterval(slipperInterval);
+    
+    // Звук попадания
+    sounds.hit.currentTime = 0;
+    sounds.hit.play();
+    
+    // Частицы
+    createParticles(slipper.getBoundingClientRect());
     
     // Анимация попадания
     slipper.style.animation = 'hit 0.3s ease';
@@ -266,22 +322,19 @@ function slipperHit() {
 }
 
 function gameOver() {
-    if (!gameRunning || messageShown) return; // ДОБАВЛЕНО messageShown
+    if (!gameRunning) return;
     
     gameRunning = false;
-    messageShown = true;
-    
     clearInterval(gameInterval);
-    clearInterval(slipperInterval);
     
     startBtn.disabled = false;
     pauseBtn.disabled = true;
     
-    // Удаляем старое сообщение если есть
-    const oldMessage = gameArea.querySelector('.game-message');
-    if (oldMessage) {
-        oldMessage.remove();
-    }
+    // Обновление статистики
+    stats.games++;
+    stats.totalTime += time;
+    stats.totalSlippers += totalSlippersDodged;
+    localStorage.setItem('slipperStats', JSON.stringify(stats));
     
     // Обновление рекорда
     let isNewRecord = false;
@@ -290,28 +343,31 @@ function gameOver() {
         highscore = time;
         highscoreDisplay.textContent = highscore.toFixed(1);
         localStorage.setItem('slipperHighscore', highscore);
+        highscoreDisplay.classList.add('new-record');
+        setTimeout(() => highscoreDisplay.classList.remove('new-record'), 2000);
     }
     
     // Показываем сообщение
     const messageText = isNewRecord ? '🎉 НОВЫЙ РЕКОРД! 🎉' : 'Бабушка таки попала тапком!';
     const messageColor = isNewRecord ? '#03b66b' : '#ff6b00';
-    showMessage(messageText, messageColor);
+    showMessage(messageText, messageColor, 2000);
     
     // Финальное сообщение
     setTimeout(() => {
         const comment = getFunnyComment(time);
-        if (gameArea.querySelector('.game-message')) {
-            gameArea.querySelector('.game-message').remove();
-        }
-    }, 1500);
+        showMessage(comment, '#666', 2000);
+        
+        // Статистика
+        setTimeout(() => {
+            const avgTime = (stats.totalTime / stats.games).toFixed(1);
+            showMessage(`Всего игр: ${stats.games} | Среднее: ${avgTime}с`, '#2196F3', 2000);
+        }, 2000);
+    }, 2000);
 }
 
-function showMessage(text, color) {
-    // Удаляем старое сообщение если есть
+function showMessage(text, color, duration = 2000) {
     const oldMessage = gameArea.querySelector('.game-message');
-    if (oldMessage) {
-        oldMessage.remove();
-    }
+    if (oldMessage) oldMessage.remove();
     
     const message = document.createElement('div');
     message.className = 'game-message';
@@ -323,13 +379,17 @@ function showMessage(text, color) {
         transform: translate(-50%, -50%);
         background: ${color};
         color: white;
-        padding: 20px 40px;
+        padding: 15px 30px;
         border-radius: 15px;
         font-size: 24px;
         font-weight: bold;
         z-index: 100;
         animation: fadeIn 0.5s ease;
         pointer-events: none;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        max-width: 80%;
+        word-wrap: break-word;
     `;
     
     gameArea.appendChild(message);
@@ -344,13 +404,64 @@ function showMessage(text, color) {
                 }
             }, 500);
         }
-    }, 2000);
+    }, duration);
+}
+
+
+
+function createParticles(rect) {
+    const particles = ['👟', '💥', '✨', '🌟'];
+    const particleCount = 15;
+    
+    for (let i = 0; i < particleCount; i++) {
+        const particle = document.createElement('div');
+        particle.textContent = particles[Math.floor(Math.random() * particles.length)];
+        particle.style.cssText = `
+            position: absolute;
+            left: ${rect.left + rect.width/2}px;
+            top: ${rect.top + rect.height/2}px;
+            font-size: ${15 + Math.random() * 15}px;
+            opacity: 1;
+            z-index: 40;
+            pointer-events: none;
+        `;
+        
+        gameArea.appendChild(particle);
+        
+        // Анимация
+        const angle = Math.random() * Math.PI * 2;
+        const distance = 50 + Math.random() * 100;
+        const duration = 500 + Math.random() * 500;
+        
+        particle.animate([
+            { 
+                transform: 'translate(0, 0) scale(1) rotate(0deg)',
+                opacity: 1 
+            },
+            { 
+                transform: `translate(${Math.cos(angle) * distance}px, ${Math.sin(angle) * distance}px) scale(0) rotate(${360}deg)`,
+                opacity: 0 
+            }
+        ], {
+            duration: duration,
+            easing: 'ease-out'
+        });
+        
+        setTimeout(() => {
+            if (particle.parentNode === gameArea) {
+                gameArea.removeChild(particle);
+            }
+        }, duration);
+    }
 }
 
 function getFunnyComment(time) {
-    if (time < 5) return 'Даже баба Люба из 3 подъезда держится дольше!';
-    if (time < 15) return 'Неплохо! Но до бабушкиной меткости ещё далеко.';
+    if (time < 3) return 'Бабушка попала с первого раза!';
+    if (time < 7) return 'Даже баба Люба из 3 подъезда держится дольше!';
+    if (time < 12) return 'Неплохо! Но до бабушкиной меткости ещё далеко.';
+    if (time < 20) return 'Хороший результат!';
     if (time < 30) return 'Отлично! Ты почти как молодой Евреев!';
+    if (time < 45) return 'Великолепно! Бабушка в шоке!';
     return 'ВОТ ЭТО ДА! Бабушка гордилась бы тобой!';
 }
 
@@ -359,8 +470,10 @@ function checkAchievements() {
         const targetTime = parseInt(achievement.dataset.target) || 0;
         if (time >= targetTime && !achievement.classList.contains('unlocked')) {
             achievement.classList.add('unlocked');
+            sounds.achievement.currentTime = 0;
+            sounds.achievement.play();
             
-            // Мини-анимация разблокировки
+            // Анимация
             achievement.style.transform = 'scale(1.1)';
             setTimeout(() => {
                 achievement.style.transform = '';
@@ -368,3 +481,26 @@ function checkAchievements() {
         }
     });
 }
+
+// Добавить в конец HTML для статистики
+function showStatsModal() {
+    const modal = document.createElement('div');
+    modal.innerHTML = `
+        <div style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:1000; display:flex; justify-content:center; align-items:center;">
+            <div style="background:white; padding:30px; border-radius:15px; max-width:500px; width:90%;">
+                <h2>📊 Статистика игры</h2>
+                <p>Всего игр: ${stats.games}</p>
+                <p>Общее время: ${stats.totalTime.toFixed(1)}с</p>
+                <p>Среднее время: ${stats.games > 0 ? (stats.totalTime/stats.games).toFixed(1) : 0}с</p>
+                <p>Всего увернулся: ${stats.totalSlippers} тапков</p>
+                <p>Текущий рекорд: ${highscore.toFixed(1)}с</p>
+                <button onclick="this.parentElement.parentElement.remove()" style="margin-top:20px; padding:10px 20px; background:#f44336; color:white; border:none; border-radius:5px; cursor:pointer;">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    `;
+    document.body.appendChild(modal);
+}
+
+// Добавить кнопку статистики в HTML или вызвать showStatsModal()

@@ -2,7 +2,6 @@
 let filipcoins = 0;        // Количество монет
 let clickForce = 1;        // Сила клика
 let autoClick = 0;         // Автокликеры
-let achievements = [];     // Достижения
 
 let strongClickCost = 10;  // Стоимость улучшения клика (выносим в переменную)
 let autoClickCost = 50; // Стоимость Атоклика
@@ -164,7 +163,7 @@ function loadGame() {
     }
 }
 
-// Автосохранение каждые 5 секунд
+// Автосохранение каждую секунду
 setInterval(saveGame, 1000);
 
 // Загружаем игру при запуске
