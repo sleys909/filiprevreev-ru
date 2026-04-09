@@ -618,6 +618,63 @@ body {
     box-shadow: none;
 }
 
+.TestEvreev {
+    background: rgba(26, 26, 26, 0.8); /* Полупрозрачный темный фон */
+    padding: 60px 20px;               /* Больше отступов сверху и снизу */
+    border-radius: 15px;
+    border: 2px solid #ff4500;        /* Оранжево-красная рамка под стать игре выше */
+    text-align: center;
+    color: white;
+    margin: 40px auto;
+    max-width: 900px;                 /* Растягиваем блок пошире */
+    box-shadow: 0 0 20px rgba(255, 69, 0, 0.3); /* Легкое свечение */
+}
+
+#question-text {
+    font-size: 2.5em;                 /* Делаем шрифт крупным */
+    font-weight: bold;
+    margin-bottom: 30px;
+    font-family: 'Arial Black', sans-serif;
+    margin: 20;
+}
+
+
+#options {
+    display: flex;          /* Включаем гибкую сетку */
+    flex-direction: column; /* Выстраиваем кнопки в столбик */
+    align-items: center;    /* Центрируем их по горизонтали */
+    gap: 15px;              /* ВОТ ОН - тот самый отступ между кнопками */
+    margin-top: 30px;       /* Отступ от вопроса до кнопок */
+}
+
+
+.test-btn {
+    background-color: #ff0000;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    width: 80%;             /* Делаем кнопки одинаковой ширины */
+    max-width: 500px;       /* Но не шире 500px, чтобы не были на весь экран */
+    transition: 0.3s;
+    border-radius: 5px;     /* Немного скруглим углы для стиля */
+}
+
+.test-btn:hover {
+    background-color: #ffffff;
+    color: #ff0000;
+    transform: scale(1.02); /* Легкий эффект при наведении */
+}
+
+#percent {
+    font-size: 2em;
+    color: #ff0000;
+}
+
+
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-5px); }

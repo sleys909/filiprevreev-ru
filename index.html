@@ -232,10 +232,18 @@
                     </div>
                 </div>
             </div>
-            <div class="BestTextRed"> <h1> Тест Евреева: <span class="colorGrey">  насколько ты Евреев </span></h1> </div>
-            <div class="TestEvreev">
-                 
+            <div id="test-container">
+                <div id="question-text">Готов узнать, насколько ты Евреев?</div>
+                <div id="options">
+                    <button class="test-btn" onclick="nextQuestion(1)">Начать тест</button>
+                </div>
             </div>
+            <div id="result" style="display:none;">
+                <h2>Твой результат: <span id="percent">0</span>% Евреева</h2>
+                <p id="result-comment"></p>
+                <button class="test-btn" onclick="resetTest()">Пройти заново</button>
+            </div>
+
             <div class="BestTextRed"><h1> Кликер <span class="colorGrey"> Евреева </span> </h1> </div>
             <div class="ClickerEvreeva"> 
                 <div class="ClickerStats">
@@ -286,5 +294,6 @@
 <script src="Clicker.js"></script>
 <script src="game.js"></script>
 <script src="gallery.js"></script>
+<script src="Test.js"></script>
 </body>
 </html
